@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Book Generator - Sign Up</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .signups {
+            background: white;
+            width: 440px;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 32px;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            height: 48px;
+            box-sizing: border-box;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .primary-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+
+        .secondary-btn {
+            background-color: #6c757d;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+
+        .primary-btn:hover {
+            background-color: #0069d9;
+        }
+
+        .secondary-btn:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="signups">
+        <h1>Sign up!</h1>
+        <p class="subtitle">Create an account and login.</p>
+
+        <form class="auth-form" id="signupForm">
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" 
+                       id="email" 
+                       name="email"
+                       required
+                       placeholder="Example@gmail.com">
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" 
+                       id="password" 
+                       name="password" 
+                       required>
+            </div>
+
+            <div class="input-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" 
+                       id="confirmPassword" 
+                       name="confirmPassword" 
+                       required>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="secondary-btn" onclick="window.location.href='login.html'">Go back</button>
+                <button type="submit" class="primary-btn">Create account</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            alert('Account successfully created!');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>
