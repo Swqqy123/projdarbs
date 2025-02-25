@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html") # Palaižot app.py atveras index.html
 
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
@@ -14,11 +14,11 @@ def signup():
         password = request.form['password']
         confirm_password = request.form['confirmPassword']
         
-        # Check if passwords match
+        # Pārbauda vai paroles sakrīt
         if password != confirm_password:
             return "Passwords do not match!"
 
-        # Save new user to the database
+        # Saglabā jaunu user datu bāzē
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
         c.execute("INSERT INTO users (email, password) VALUES (?, ?)", (email, password))
@@ -31,13 +31,13 @@ def signup():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    error = None  # Variable to hold error message
+    error = None  # Mainīgais kur turēt error message
 
     if request.method == 'POST':
         email = request.form['username']
         password = request.form['password']
 
-        # Check if the user exists in the database
+        # Pārbauda vai konts ir reģistrēts datu bāzē
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
         c.execute("SELECT * FROM users WHERE email=? AND password=?", (email, password))
@@ -45,13 +45,12 @@ def login():
         conn.close()
 
         if user:
-            return "Login successful!"  # For simplicity, we just return this text
+            return "Login successful!"  # Parādas šāda ziņa, ja lietotājs sekmīgi ielogojas	
         else:
-            error = "Invalid credentials!"  # Set error message
+            error = "Invalid credentials!"  # Izveidojas šāds error ja lietotājs nav atrasts
 
-    return render_template('login.html', error=error)  # Pass error message to the template
+    return render_template('login.html', error=error)  # Nosūta kļūdas ziņojumu
 
 
 if __name__ == "__main__":
     app.run(debug=True)
-
