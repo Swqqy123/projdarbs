@@ -77,16 +77,16 @@
             background-color: #0069d9;
         }
 
-        /* Error message styling */
+        /* errora stils */
         .error {
             color: red;
             font-size: 14px;
             margin-top: 10px;
         }
 
-        /* Go to Home button styling */
+        /* Return pogas dizains */
         .secondary-btn {
-            background-color: #6c757d; /* Gray color as in signup.html */
+            background-color: #6c757d;
             color: white;
             padding: 14px;
             border: none;
@@ -94,11 +94,11 @@
             font-size: 16px;
             cursor: pointer;
             transition: background-color 0.2s;
-            width: 100%; /* Ensures the button is the same width as the Log In button */
+            width: 100%; 
         }
 
         .secondary-btn:hover {
-            background-color: #5a6268; /* Darker gray on hover */
+            background-color: #5a6268;
         }
     </style>
 </head>
@@ -107,7 +107,7 @@
         <h1>Log In!</h1>
         <p class="subtitle">Welcome back, please log in to your account.</p>
 
-        <!-- Display error message if there is an error -->
+        <!-- Ja ir errors, izmet erroru -->
         {% if error %}
         <p class="error">{{ error }}</p>
         {% endif %}
@@ -134,7 +134,7 @@
         </form>
 
         <div class="button-group" style="margin-top: 20px;">
-            <button type="button" class="secondary-btn" onclick="window.location.href='/'">Return</button>
+            <button type="button" class="secondary-btn" onclick="window.location.href='/'">Return</button> <!-- Return poga -->
         </div>
     </div>
 </body>
