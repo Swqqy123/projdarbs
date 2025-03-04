@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Generated Books</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .top-bar {
+            background-color: #ffecec;
+            padding: 20px;
+        }
+        .top-bar h2 {
+            margin: 0 0 8px 0;
+            font-size: 20px;
+            color: #333;
+        }
+        .top-bar .label {
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .top-bar input[type="text"] {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            width: 200px;
+        }
+
+        .table-container {
+            background-color: #d6ebff;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #d6ebff;
+        }
+
+        thead {
+            background-color: #d6ebff;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            border-bottom: 2px solid #fff;
+            font-weight: 600;
+        }
+
+        td {
+            border-bottom: 1px solid #fff;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .pagination button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        .pagination button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .pagination-info span {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <h2>Books Generated</h2>
+            <div>
+                <span class="label">Entered Genres:</span>
+                <span id="genres">{{ genres }}</span>
+            </div>
+            <div style="margin-top: 10px;">
+                <span class="label">Search:</span>
+                <input type="text" id="searchInput" placeholder="Search...">
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Author</th>
+                        <th>Name</th>
+                        <th>Release Year</th>
+                        <th>Genre</th>
+                    </tr>
+                </thead>
+                <tbody id="booksTableBody">
+                {% if books %}
+                    {% for book in books %}
+                    <tr>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.name }}</td>
+                        <td>{{ book.release_year }}</td>
+                        <td>{{ book.genre }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4" style="text-align:center;">No books found for these genres</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <form action="/generate" method="post">
+                <input type="hidden" name="genres" value="{{ genres }}">
+                <input type="hidden" name="start_index" value="{{ start_index - 10 }}">
+                <button type="submit" {% if start_index == 0 %}disabled{% endif %}>Previous</button>
+            </form>
+            <div class="pagination-info">
+                <span>Page {{ (start_index // 10) + 1 }}</span>
+                <span>of</span>
+                <span>{{ (total_books // 10) + 1 }}</span>
+            </div>
+            <form action="/generate" method="post">
+                <input type="hidden" name="genres" value="{{ genres }}">
+                <input type="hidden" name="start_index" value="{{ start_index + 10 }}">
+                <button type="submit" {% if books|length < 10 %}disabled{% endif %}>Next</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const tableRows = document.querySelectorAll('tbody tr');
+
+        searchInput.addEventListener('keyup', function() {
+            const filter = searchInput.value.toLowerCase();
+            tableRows.forEach(row => {
+                const rowText = row.innerText.toLowerCase();
+                row.style.display = rowText.includes(filter) ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>
