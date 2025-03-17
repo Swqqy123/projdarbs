@@ -154,7 +154,7 @@
             <div class="pagination-info">
                 <span>Page {{ (start_index // 10) + 1 }}</span>
                 <span>of</span>
-                <span>{{ (total_books // 10) + 1 }}</span>
+                <span>{{ ((total_books + 9) // 10) }}</span>
             </div>
             <form action="/generate" method="post">
                 <input type="hidden" name="genres" value="{{ genres }}">

@@ -1,30 +1,48 @@
 from flask import Flask, request, render_template, redirect, url_for, jsonify
 import sqlite3
 import requests
+from urllib.parse import quote
+import bcrypt  # Added for password hashing
 
 app = Flask(__name__)
 
-@app.route("/")
-def index():
-    return render_template("index.html")
+# Initialize database with proper schema
+def init_db():
+    with sqlite3.connect('users.db') as conn:
+        conn.execute('''CREATE TABLE IF NOT EXISTS users
+                     (email TEXT PRIMARY KEY, password TEXT)''')
+
+init_db()
 
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         email = request.form['email']
-        password = request.form['password']
+        password = request.form['password'].encode('utf-8')  # Convert to bytes
         confirm_password = request.form['confirmPassword']
-        
-        if password != confirm_password:
+
+        if password != confirm_password.encode('utf-8'):
             return "Passwords do not match!"
 
-        conn = sqlite3.connect('users.db')
-        c = conn.cursor()
-        c.execute("INSERT INTO users (email, password) VALUES (?, ?)", (email, password))
-        conn.commit()
-        conn.close()
-
-        return redirect(url_for('login'))
+        try:
+            # Generate salt and hash password
+            salt = bcrypt.gensalt()
+            hashed_password = bcrypt.hashpw(password, salt)
+            
+            with sqlite3.connect('users.db') as conn:
+                c = conn.cursor()
+                c.execute("SELECT email FROM users WHERE email=?", (email,))
+                if c.fetchone():
+                    return "Email already registered!"
+                c.execute("INSERT INTO users (email, password) VALUES (?, ?)", 
+                         (email, hashed_password))
+                conn.commit()
+            return redirect(url_for('login'))
+        except sqlite3.IntegrityError:
+            return "Email already registered!"
+        except Exception as e:
+            app.logger.error(f"Signup error: {str(e)}")
+            return "Registration failed!"
 
     return render_template('signup.html')
 
@@ -34,18 +52,21 @@ def login():
 
     if request.method == 'POST':
         email = request.form['username']
-        password = request.form['password']
+        password = request.form['password'].encode('utf-8')
 
-        conn = sqlite3.connect('users.db')
-        c = conn.cursor()
-        c.execute("SELECT * FROM users WHERE email=? AND password=?", (email, password))
-        user = c.fetchone()
-        conn.close()
-
-        if user:
-            return redirect(url_for('generator'))
-        else:
-            error = "Invalid credentials!"
+        try:
+            with sqlite3.connect('users.db') as conn:
+                c = conn.cursor()
+                c.execute("SELECT password FROM users WHERE email=?", (email,))
+                result = c.fetchone()
+                
+                if result and bcrypt.checkpw(password, result[0]):
+                    return redirect(url_for('generator'))
+                else:
+                    error = "Invalid credentials!"
+        except Exception as e:
+            app.logger.error(f"Login error: {str(e)}")
+            error = "Login failed!"
 
     return render_template('login.html', error=error)
 
