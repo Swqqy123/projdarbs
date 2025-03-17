@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Book Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .generator {
+            background: white;
+            width: 440px;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 32px;
+        }
+        .genre-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            height: 48px;
+            box-sizing: border-box;
+            margin-bottom: 24px;
+        }
+        .primary-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        .primary-btn:hover {
+            background-color: #0069d9;
+        }
+        .secondary-btn {
+            background-color: #6c757d;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .secondary-btn:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="generator">
+        <h1>Generate some books to read!</h1>
+        <p class="subtitle">Input your favourite genre of books and press generate</p>
+        <form action="/generate" method="post">
+            <input type="text" 
+                   class="genre-input" 
+                   placeholder="Fantasy, Science Fiction, Romance..."
+                   name="genres"
+                   required>
+            <button type="submit" class="primary-btn">Generate!</button>
+        </form>
+        <button class="secondary-btn" onclick="window.location.href='/'">Log Out</button>
+    </div>
+
+    <!-- Inspect element  scripts -->
+    <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 'I'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 'J'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0)) {
+                return false;
+            }
+        };
+    </script>
+</body>
+</html>
