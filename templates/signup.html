@@ -1,119 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Book Generator - Sign Up</title>
+    <title>Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #4f46e5;
+            --accent: #f59e0b;
+            --background: #f8fafc;
+            --text: #1e293b;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
         }
+
         .signups {
             background: white;
             width: 440px;
+            max-width: 95%;
             padding: 40px;
-            border-radius: 8px;
+            border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
+        .signups:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
         h1 {
             font-size: 28px;
-            color: #333;
-            margin-bottom: 8px;
+            color: var(--text);
+            margin-bottom: 12px;
+            font-weight: 700;
         }
+
         .subtitle {
-            color: #666;
+            color: #64748b;
             font-size: 16px;
             margin-bottom: 32px;
+            line-height: 1.5;
         }
+
         .auth-form {
             display: flex;
             flex-direction: column;
             gap: 24px;
         }
+
         .input-group {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
+
         label {
             font-size: 14px;
-            color: #333;
+            color: var(--text);
             font-weight: 500;
         }
+
         input {
             width: 100%;
             padding: 12px 16px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
             font-size: 14px;
             height: 48px;
             box-sizing: border-box;
+            transition: all 0.3s ease;
         }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            outline: none;
+        }
+
         .error {
-            color: red;
+            color: #ef4444;
             font-size: 14px;
-            margin-top: -16px;
+            margin: -12px 0 16px 0;
+            font-weight: 500;
         }
+
         .criteria {
-            margin-top: -8px;
+            margin: -8px 0 16px 0;
             font-size: 14px;
+            color: #64748b;
         }
+
         .criteria ul {
             list-style: none;
             padding: 0;
+            margin: 8px 0;
         }
+
         .criteria li {
-            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
         }
-        .valid {
-            color: green;
+
+        .criteria li::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            transition: all 0.3s ease;
         }
-        .invalid {
-            color: red;
+
+        .criteria li.valid::before {
+            content: '✓';
+            background: #10b981;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
         }
+
         .button-group {
             display: flex;
             gap: 16px;
-            margin-top: 16px;
+            margin-top: 24px;
         }
+
         .primary-btn {
-            background-color: #007bff;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             padding: 14px;
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease;
             width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .secondary-btn {
-            background-color: #6c757d;
-            color: white;
-            padding: 14px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            width: 100%;
-        }
+
         .primary-btn:hover {
-            background-color: #0069d9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
+
+        .secondary-btn {
+            background: #475569;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
         .secondary-btn:hover {
-            background-color: #5a6268;
+            background: #334155;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .signups {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="signups">
-        <h1>Sign up!</h1>
-        <p class="subtitle">Create an account and login.</p>
+        <h1>Create Account</h1>
+        <p class="subtitle">Start your journey with Book Generator</p>
         
         {% if error %}
             <p class="error">{{ error }}</p>
@@ -121,100 +194,85 @@
 
         <form class="auth-form" action="/signup" method="post">
             <div class="input-group">
-                <label for="email">Email</label>
+                <label for="email">Email Address</label>
                 <input type="email" 
                        id="email" 
                        name="email"
                        required
-                       placeholder="Example@gmail.com">
+                       placeholder="you@example.com">
             </div>
+
             <div class="input-group">
                 <label for="password">Password</label>
                 <input type="password" 
                        id="password" 
                        name="password" 
-                       required>
+                       required
+                       placeholder="••••••••">
             </div>
+
             <div class="criteria">
-                <p>Password requirements:</p>
+                <p>Password Requirements:</p>
                 <ul>
-                    <li id="length" class="invalid">✖ At least 8 characters</li>
-                    <li id="uppercase" class="invalid">✖ Contains uppercase letter</li>
-                    <li id="lowercase" class="invalid">✖ Contains lowercase letter</li>
+                    <li id="length">At least 8 characters</li>
+                    <li id="uppercase">Contains uppercase letter</li>
+                    <li id="lowercase">Contains lowercase letter</li>
                 </ul>
             </div>
+
             <div class="input-group">
                 <label for="confirmPassword">Confirm Password</label>
                 <input type="password" 
                        id="confirmPassword" 
                        name="confirmPassword" 
-                       required>
+                       required
+                       placeholder="••••••••">
             </div>
+
             <div class="button-group">
-                <button type="button" class="secondary-btn" onclick="window.location.href='/'">Return</button>
-                <button type="submit" class="primary-btn">Create account</button>
+                <button type="button" class="secondary-btn" onclick="window.location.href='/'">
+                    Return
+                </button>
+                <button type="submit" class="primary-btn">
+                    Create Account
+                </button>
             </div>
         </form>
     </div>
-    
-    <!-- Inspect element  scripts -->
+
     <script>
-        
         document.addEventListener('contextmenu', event => event.preventDefault());
-        
         document.onkeydown = function(e) {
-            if (e.keyCode == 123) {
-                return false;
-            }
-            if (e.ctrlKey && e.shiftKey && e.keyCode === 'I'.charCodeAt(0)) {
-                return false;
-            }
-            if (e.ctrlKey && e.shiftKey && e.keyCode === 'J'.charCodeAt(0)) {
-                return false;
-            }
-            if (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0)) {
-                return false;
-            }
+            if (e.keyCode == 123) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 73) return false;
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 74) return false;
+            if (e.ctrlKey && e.keyCode === 85) return false;
         };
 
-        
-        var passwordInput = document.getElementById('password');
-        passwordInput.addEventListener('keyup', function() {
-            var pwd = passwordInput.value;
+        const passwordInput = document.getElementById('password');
+        const requirements = {
+            length: document.getElementById('length'),
+            uppercase: document.getElementById('uppercase'),
+            lowercase: document.getElementById('lowercase')
+        };
 
+        passwordInput.addEventListener('input', function() {
+            const pwd = this.value;
             
-            if (pwd.length >= 8) {
-                document.getElementById('length').classList.remove('invalid');
-                document.getElementById('length').classList.add('valid');
-                document.getElementById('length').textContent = "✔ At least 8 characters";
-            } else {
-                document.getElementById('length').classList.remove('valid');
-                document.getElementById('length').classList.add('invalid');
-                document.getElementById('length').textContent = "✖ At least 8 characters";
-            }
-
+            // Check length
+            toggleClass(requirements.length, pwd.length >= 8);
             
-            if (/[A-Z]/.test(pwd)) {
-                document.getElementById('uppercase').classList.remove('invalid');
-                document.getElementById('uppercase').classList.add('valid');
-                document.getElementById('uppercase').textContent = "✔ Contains uppercase letter";
-            } else {
-                document.getElementById('uppercase').classList.remove('valid');
-                document.getElementById('uppercase').classList.add('invalid');
-                document.getElementById('uppercase').textContent = "✖ Contains uppercase letter";
-            }
-
+            // Check uppercase
+            toggleClass(requirements.uppercase, /[A-Z]/.test(pwd));
             
-            if (/[a-z]/.test(pwd)) {
-                document.getElementById('lowercase').classList.remove('invalid');
-                document.getElementById('lowercase').classList.add('valid');
-                document.getElementById('lowercase').textContent = "✔ Contains lowercase letter";
-            } else {
-                document.getElementById('lowercase').classList.remove('valid');
-                document.getElementById('lowercase').classList.add('invalid');
-                document.getElementById('lowercase').textContent = "✖ Contains lowercase letter";
-            }
+            // Check lowercase
+            toggleClass(requirements.lowercase, /[a-z]/.test(pwd));
         });
+
+        function toggleClass(element, isValid) {
+            element.classList.toggle('valid', isValid);
+            element.classList.toggle('invalid', !isValid);
+        }
     </script>
 </body>
 </html>
